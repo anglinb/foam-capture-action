@@ -1,103 +1,65 @@
 <p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
+  <a href="https://github.com/anglinb/foam-capture-action/actions"><img alt="typescript-action status" src="https://github.com/anglinb/foam-capture-action/workflows/build-test/badge.svg"></a>
 </p>
 
-# Create a JavaScript Action using TypeScript
+# Capture knowledge into [foam knowledge base](https://foambubble.github.io/foam/)!
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+[Foam]() is knowledge graph suit that allows you to collect, visualize and interrelate data. This action allows you to quickly capture your thoughts to an inbox to revisit them later. 
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+## Usage
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
-
-## Create an action from this template
-
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Main
-
-Install the dependencies  
-```bash
-$ npm install
+### 1. Setup Action
+```
+name: Manually triggered workflow
+on:
+  workflow_dispatch:
+    inputs:
+      data:
+        description: 'What information to put in the knowledge base.'
+        required: true
+        
+jobs:
+  store_data:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: anglinb/foam-capture-action@main
+      with: 
+        capture: ${{ github.event.inputs.data }}
+    - run: |
+        git config --local user.email "example@gmail.com"
+        git config --local user.name "Your name"
+        git commit -m "Captured from workflow trigger" -a
+        git push -u origin master
 ```
 
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
+### 2. Invoke Action w/ a `workflow_dispatch` event
+
+*Be sure to replace `GITHUB_TOKEN` with a [Personal Access Token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) with the `repo` scope.*
+
+
+
+```
+curl \
+  -H "Accept: application/vnd.github.v3+json" \
+  -H "Authorization: Bearer <GITHUB_TOKEN>" \
+  -X POST  --data '{"ref": "master", "inputs": { "data": "This will end up in your knowledge base!"}}' jhttps://api.github.com/repos/<owner>/<repository>/actions/workflows/<workflow-id>/dispatches
 ```
 
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
+This command won't return any information but you should see the workflow kick off!
 
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
+*Note: You can find your workflow-id by listing workflow with this command. The id you're looking for is in key `"id"` and will be an integer.*
 
-...
+```
+curl \
+  -H "Accept: application/vnd.github.v3+json" \
+  -H "Authorization: Bearer <GITHUB_TOKEN>" \
+    https://api.github.com/repos/<owner>/<repository>/actions/workflows
 ```
 
-## Change action.yml
 
-The action.yml contains defines the inputs and output for your action.
+### 3. (Optional) Create an iOS Shortcut
 
-Update the action.yml with your name, description, inputs and outputs for your action.
+I have created [a shortcut](https://www.icloud.com/shortcuts/57d2ed90c40e43a5badcc174ebfaaf1d) trigger the GitHub Action. Copy the shortcut and be sure to fill in the same values you did in the curl example. 
 
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
-
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+Once this shortcut is working, you should be able to go from share sheet in iOS to knowledge base! ✨

@@ -1,6 +1,9 @@
 name: 'Foam Capture'
 description: 'An action to capture information to your foam workspace.'
 author: 'Brian Anglin <https://github.com/anglinb'
+branding:
+  icon: 'inbox'
+  color: 'purple'
 inputs:
   capture: # change this
     required: true
