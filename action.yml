@@ -1,11 +1,10 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Foam Capture'
+description: 'An action to capture information to your foam workspace.'
+author: 'Brian Anglin <https://github.com/anglinb'
 inputs:
-  milliseconds: # change this
+  capture: # change this
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'The information you would like to capture.'
 runs:
   using: 'node12'
   main: 'dist/index.js'

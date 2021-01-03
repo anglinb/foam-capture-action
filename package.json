@@ -8,7 +8,7 @@
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
-    "lint": "eslint src/**/*.ts",
+    "lint": "echo whooops!",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
     "all": "yarn run build && yarn run format && yarn lint && yarn run package && yarn test"
@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "eslint": "3.19.0",
     "foam-capture": "^0.0.3"
   },
   "devDependencies": {
@@ -33,7 +34,6 @@
     "@types/node": "^14.14.9",
     "@typescript-eslint/parser": "^4.8.1",
     "@vercel/ncc": "^0.25.1",
-    "eslint": "^7.13.0",
     "eslint-plugin-github": "^4.1.1",
     "eslint-plugin-jest": "^23.20.0",
     "jest": "^24.9.0",

@@ -22,7 +22,9 @@ test('test runs', () => {
   const np = process.execPath
   const ip = path.join(__dirname, '..', 'lib', 'main.js')
   const options: cp.ExecFileSyncOptions = {
-    env: process.env
+    env: Object.assign({}, process.env, {
+      GITHUB_WORKSPACE: path.resolve(__dirname)
+    })
   }
   console.log(cp.execFileSync(np, [ip], options).toString())
 })
